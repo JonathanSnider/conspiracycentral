@@ -7,38 +7,30 @@ import datetime
 import requests
 import json
 client = commands.AutoShardedBot(command_prefix = '!')
-# extensions = ['gif']
-# ext_len = len(extensions)
-# current_ext = 0
-# if __name__ == "__main__":
-#   while current_ext < ext_len:
-#       client.load_extension('cogs.' + str(extensions[current_ext]))
-#       print(extensions[current_ext])
-#       current_ext+=1
 
-async def getGif():
-  # set the apikey and limit
-  apikey = "1WXXQZUOL37A"  # app key
+async def update_gif_file(): # update the gif file with new gifs
+  # set the api key and limit
+  with open('tokens.json', 'r') as f:
+    tokens = json.load(f)  # app key
+  API_KEY = tokens["tenor"]
   lmt = 1
 
   # load the user's anonymous ID from cookies or some other disk storage
-  # anon_id = <from db/cookies>
 
   # ELSE - first time user, grab and store their the anonymous ID
-  r = requests.get("https://api.tenor.com/v1/anonid?key=%s" % apikey)
+  r = requests.get("https://api.tenor.com/v1/anonid?key=%s" % API_KEY)
 
   if r.status_code == 200:
     anon_id = json.loads(r.content.decode('utf-8'))["anon_id"]
-    # store in db/cookies for re-use later
   else:
     anon_id = ""
 
-  # our test search
+  # search term
   search_term = "cat morning"
 
   # get the top 8 GIFs for the search term
   r = requests.get(
-    "https://api.tenor.com/v1/random?q=%s&key=%s&limit=%s&anon_id=%s" % (search_term, apikey, lmt, anon_id))
+    "https://api.tenor.com/v1/random?q=%s&key=%s&limit=%s&anon_id=%s" % (search_term, API_KEY, lmt, anon_id))
 
   if r.status_code == 200:
     # load the GIFs using the urls for the smaller GIF sizes
@@ -48,37 +40,40 @@ async def getGif():
   else:
     top_8gifs = None
 
-  with open('gifs.json', 'r') as gifsFile:
-    gifURLs = json.load(gifsFile)
-  return gifURLs["results"][0]["url"]
 
 @client.event
 async def on_ready():
-  postGIF.start()
+  post_gif.start() # start background processes
 
 @tasks.loop(seconds=60)
-async def postGIF():
+async def post_gif():
     current_time = strftime("%H:%M", gmtime())
-    #print(current_time)
-    if(current_time == '12:00'):
-      try:
-        gifURL = await getGif()
-        general = client.get_channel(400922653218570254)
-        await general.send(gifURL)
+    if(current_time == '12:00'): # 7am CST
+      try: 
+        await update_gif_file()
+
+        with open('gifs.json', 'r') as gifsFile:
+          gif_urls = json.load(gifsFile)
+        gif_url = gif_urls["results"][0]["url"] # first gif from file
+
+        general = client.get_channel(400922653218570254) # post gif to channel
+        await general.send(gif_url)
       except Exception as e:
         print(e)
 
+# load cogs
 extensions = ['cat', 'dog', 'angel', 'santa']
 ext_len = len(extensions)
 current_ext = 0
-if __name__ == "__main__":
-  while current_ext < ext_len:
-      client.load_extension(str(extensions[current_ext]))
-      print(extensions[current_ext])
-      current_ext+=1
+for cog in extensions:
+  try:
+    client.load_extension(f"cogs.{cog}")
+    print(f"{cog} was successfully loaded!")
+  except Exception as e:
+    print(f"There was an error loading {cog}: {e}")
 
 # Run the bot
 with open('tokens.json', 'r') as f:
-  jsonInfoData = json.load(f)
-TOKEN = jsonInfoData["bot"]
+  tokens = json.load(f)
+TOKEN = tokens["bot"]
 client.run(TOKEN)
