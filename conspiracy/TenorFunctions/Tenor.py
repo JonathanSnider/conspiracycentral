@@ -40,12 +40,12 @@ class Tenor (commands.Cog):
     if r.status_code == 200:
       # load the GIFs using the urls for the smaller GIF sizes
       top_8gifs = json.loads(r.content.decode('utf-8'))
-      with open('gifs.json', 'w') as outfile:
+      with open('gif_files/gifs.json', 'w') as outfile:
         json.dump(top_8gifs, outfile)
     else:
       top_8gifs = None
 
-  async def return_gif_from_search(self, search_term, file_name):
+  async def return_gif_from_search(self, search_term):
     # set the api key and limit
     with open('tokens.json', 'r') as f:
       tokens = json.load(f)  # app key
@@ -69,12 +69,12 @@ class Tenor (commands.Cog):
     if r.status_code == 200:
       # load the GIFs using the urls for the smaller GIF sizes
       top_8gifs = json.loads(r.content.decode('utf-8'))
-      with open(f'{file_name}.json', 'w') as outfile:
+      with open(f'gif_files/random_animal_gifs.json.json', 'w') as outfile:
         json.dump(top_8gifs, outfile)
     else:
       top_8gifs = None
 
-    with open(f'{file_name}.json', 'r') as gifs_file:
+    with open('gif_files/random_animal_gifs.json.json', 'r') as gifs_file:
       gif_urls = json.load(gifs_file)
     return gif_urls["results"][0]["url"]
 
