@@ -22,7 +22,7 @@ async def post_gif():
         morning_update = Tenor()
         await morning_update.update_morning_gif_file()
 
-        with open('gifs.json', 'r') as gifsFile:
+        with open('cogs/gif_files/gifs.json', 'r') as gifsFile:
           gif_urls = json.load(gifsFile)
         gif_url = gif_urls["results"][0]["url"] # first gif from file
 
@@ -32,7 +32,7 @@ async def post_gif():
         print(e)
 
 # load cogs
-extensions = ['cat', 'dog', 'GuildGifsAndMessages', 'santa']
+extensions = ['GuildGifsAndMessages', 'AnimalGifs']
 ext_len = len(extensions)
 current_ext = 0
 for cog in extensions:

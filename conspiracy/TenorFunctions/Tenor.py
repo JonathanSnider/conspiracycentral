@@ -10,8 +10,6 @@ import json
 
 
 class Tenor (commands.Cog):
-  def __init__(self, client):
-    self.client = client
 
   async def update_morning_gif_file(self): # update the gif file with new gifs
     # set the api key and limit
@@ -40,7 +38,7 @@ class Tenor (commands.Cog):
     if r.status_code == 200:
       # load the GIFs using the urls for the smaller GIF sizes
       top_8gifs = json.loads(r.content.decode('utf-8'))
-      with open('gif_files/gifs.json', 'w') as outfile:
+      with open('cogs/gif_files/gifs.json', 'w') as outfile:
         json.dump(top_8gifs, outfile)
     else:
       top_8gifs = None
@@ -69,12 +67,12 @@ class Tenor (commands.Cog):
     if r.status_code == 200:
       # load the GIFs using the urls for the smaller GIF sizes
       top_8gifs = json.loads(r.content.decode('utf-8'))
-      with open(f'gif_files/random_animal_gifs.json.json', 'w') as outfile:
+      with open(f'cogs/gif_files/random_animal_gifs.json', 'w') as outfile:
         json.dump(top_8gifs, outfile)
     else:
       top_8gifs = None
 
-    with open('gif_files/random_animal_gifs.json.json', 'r') as gifs_file:
+    with open('cogs/gif_files/random_animal_gifs.json', 'r') as gifs_file:
       gif_urls = json.load(gifs_file)
     return gif_urls["results"][0]["url"]
 
