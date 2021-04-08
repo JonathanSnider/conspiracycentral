@@ -65,5 +65,5 @@ class GuildGifsAndMessages (commands.Cog):
   
 
 def setup(client):
-  n = Angel(client)
+  n = GuildGifsAndMessages(client)
   client.add_cog(n)    
