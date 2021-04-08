@@ -26,7 +26,11 @@ async def post_gif():
           gif_urls = json.load(gifsFile)
         gif_url = gif_urls["results"][0]["url"] # first gif from file
 
-        general = client.get_channel(400922653218570254) # post gif to channel
+        with open('tokens.json') as f:
+          tokens = json.load(f)
+        channel_ids = tokens["channel_ids"]      
+
+        general = client.get_channel(int(channel_ids["general"])) # post gif to channel
         await general.send(gif_url)
       except Exception as e:
         print(e)

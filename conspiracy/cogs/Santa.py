@@ -114,6 +114,9 @@ class Santa (commands.Cog):
     name = ctx.author.name
     user_id = ctx.author.id
     user_in_file = await self.check_if_in_file(name, user_id)
+    with open('tokens.json') as f:
+      tokens = json.load(f)
+    user_ids = tokens["user_ids"]
     
     if(user_in_file == True):
       await ctx.send("Already entered!")
@@ -124,12 +127,15 @@ class Santa (commands.Cog):
         await ctx.send("Entered!")
       except Exception as e:
         await ctx.send("Sorry! There was an error.")
-        await ctx.send(f"<@294574889652715520> {e}")
+        await ctx.send(f"<@{user_ids['sarge']}> {e}")
   
   @commands.command()
   # Withdraw Command
   async def withdraw(self, ctx):
     name = ctx.author.name
+    with open('tokens.json') as f:
+      tokens = json.load(f)
+    user_ids = tokens["user_ids"]
     try:
       removed_person = await self.delete_user_from_file(name)
       if(removed_person == None):
@@ -138,7 +144,7 @@ class Santa (commands.Cog):
         await ctx.send("Withdrawn!")
     except Exception as e:
       await ctx.send("Sorry! There was an error.")
-      await ctx.send(f"<@294574889652715520> {e}")
+      await ctx.send(f"<@{user_ids['sarge']}> {e}")
 
   @commands.command()
   # Draw picks
