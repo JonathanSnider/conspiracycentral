@@ -2,3 +2,4 @@
 conspiracy/tokens.json
 *.pyc
 conspiracy/cogs/gif_files/random_animal_gifs.json
+conspiracy/cogs/gif_files/gifs.json
