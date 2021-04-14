@@ -39,12 +39,19 @@ class AnimalGifs (commands.Cog):
     panda_gif = await tenor.return_gif_from_search("panda")
     await ctx.send(panda_gif)
 
+  # @commands.command()
+  # # Random Llama Gifs
+  # async def llama(self, ctx):
+  #   tenor = Tenor()
+  #   llama_gif = await tenor.return_gif_from_search("llama")
+  #   await ctx.send(llama_gif)
+
   @commands.command()
-  # Random Llama Gifs
-  async def llama(self, ctx):
+  # Random Alpaca Gifs
+  async def alpaca(self, ctx):
     tenor = Tenor()
-    panda_gif = await tenor.return_gif_from_search("llama")
-    await ctx.send(panda_gif)
+    alpaca_gif = await tenor.return_gif_from_search("alpaca")
+    await ctx.send(alpaca_gif)
 
 
 
