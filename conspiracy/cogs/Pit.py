@@ -48,6 +48,7 @@ class Pit (commands.Cog):
 
     if(str(msg_author.id) not in [user_ids["sarge"], user_ids["angel"]]):
       unlucky_bastard = msg_author # person trying to pit without permission
+      unlucky_bastard.send("https://tenor.com/OySq.gif")
     else:
       unlucky_bastard = ctx.message.mentions[0]
     try:
