@@ -36,7 +36,7 @@ async def post_gif():
         print(e)
 
 # load cogs
-extensions = ['GuildGifsAndMessages', 'AnimalGifs', 'Santa']
+extensions = ['GuildGifsAndMessages', 'AnimalGifs', 'Santa', 'Pit']
 ext_len = len(extensions)
 current_ext = 0
 for cog in extensions:
